@@ -122,23 +122,39 @@ function Extra.setChapters(manga, chapters, page)
 	end
 end
 
-local lang_to_code = {}
+local langToCode = {}
+
+function updateLanguagePick()
+	selectedExtraMenu = {}
+	langToCode = {}
+	local langNames = {}
+	for k, _ in pairs(Language) do
+		if k ~= "Default" then
+			langNames[#langNames + 1] = k
+		end
+	end
+	table.sort(langNames)
+	table.insert(langNames, 1, "Default")
+	for _, k in ipairs(langNames) do
+		if LanguageNames.English[k] then
+			langToCode[#langToCode + 1] = k
+			if k == Settings.Language then
+				selectedExtraMenu[#selectedExtraMenu + 1] = ">> " .. LanguageNames[k][k] .. " (" .. LanguageNames.English[k] .. ") <<"
+			else
+				selectedExtraMenu[#selectedExtraMenu + 1] = LanguageNames[k][k] .. " (" .. LanguageNames.English[k] .. ")"
+			end
+		end
+	end
+end
 
 function Extra.setLanguage()
 	mode = "setLanguage"
 	selectedExtraMenu = {}
-	lang_to_code = {}
+	langToCode = {}
 	status = "START"
 	oldFade = 1
 	slider.Y = -50
-	for k, _ in pairs(Language) do
-		lang_to_code[#lang_to_code + 1] = k
-		if k == Settings.Language then
-			selectedExtraMenu[#selectedExtraMenu + 1] = ">> " .. LanguageNames[k][k] .. " (" .. LanguageNames.English[k] .. ") <<"
-		else
-			selectedExtraMenu[#selectedExtraMenu + 1] = LanguageNames[k][k] .. " (" .. LanguageNames.English[k] .. ")"
-		end
-	end
+	updateLanguagePick()
 	extraSelector:resetSelected()
 	Timer.reset(fadeAnimationTimer)
 	extraMenuYDrawStart = 0
@@ -328,11 +344,11 @@ local function pressOption(id)
 					if page.Extract then
 					elseif page.Path then
 						copyFile(page.Path:find("^...?0:") and page.Path or ("ux0:data/noboru/" .. page.Path), drive .. ":data/noboru/pictures/" .. unique_name .. ".image")
-						local f = getImageFormat("ux0:data/noboru/pictures/" .. unique_name .. ".image")
+						local f = getImageFormat(drive..":data/noboru/pictures/" .. unique_name .. ".image")
 						if f ~= nil then
 							rename(drive .. ":data/noboru/pictures/" .. unique_name .. ".image", drive .. ":data/noboru/pictures/" .. unique_name .. "." .. f)
+							Notifications.push(string.format(Language[Settings.Language].NOTIFICATIONS.END_DOWNLOAD, "image", drive .. ":data/noboru/pictures/" .. unique_name .. "." .. f), 1000)
 						end
-						Notifications.push(string.format(Language[Settings.Language].NOTIFICATIONS.END_DOWNLOAD, "image", drive .. ":data/noboru/pictures/" .. unique_name .. "." .. f), 1000)
 					elseif page.ParserID then
 						Threads.insertTask(
 							tempTable,
@@ -388,8 +404,8 @@ local function pressOption(id)
 			end
 		end
 	elseif mode == "setLanguage" then
-		if lang_to_code[id] then
-			Settings.Language = lang_to_code[id]
+		if langToCode[id] then
+			Settings.Language = langToCode[id]
 			GenPanels()
 			Settings.save()
 		end
@@ -414,14 +430,7 @@ function Extra.input(oldPad, pad, oldTouch, touch)
 					pressOption(id)
 					if mode == "setLanguage" then
 						if mode == "setLanguage" then
-							selectedExtraMenu = {}
-							for k, _ in pairs(Language) do
-								if k == Settings.Language then
-									selectedExtraMenu[#selectedExtraMenu + 1] = ">> " .. LanguageNames[k][k] .. " (" .. LanguageNames.English[k] .. ") <<"
-								else
-									selectedExtraMenu[#selectedExtraMenu + 1] = LanguageNames[k][k] .. " (" .. LanguageNames.English[k] .. ")"
-								end
-							end
+							updateLanguagePick()
 						end
 					end
 				end
@@ -433,14 +442,7 @@ function Extra.input(oldPad, pad, oldTouch, touch)
 			local id = extraSelector.getSelected()
 			pressOption(id)
 			if mode == "setLanguage" then
-				selectedExtraMenu = {}
-				for k, _ in pairs(Language) do
-					if k == Settings.Language then
-						selectedExtraMenu[#selectedExtraMenu + 1] = ">> " .. LanguageNames[k][k] .. " (" .. LanguageNames.English[k] .. ") <<"
-					else
-						selectedExtraMenu[#selectedExtraMenu + 1] = LanguageNames[k][k] .. " (" .. LanguageNames.English[k] .. ")"
-					end
-				end
+				updateLanguagePick()
 			end
 		elseif Controls.check(pad, SCE_CTRL_CIRCLE) and not Controls.check(oldPad, SCE_CTRL_CIRCLE) then
 			status = "WAIT"

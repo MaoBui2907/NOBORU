@@ -17,7 +17,7 @@ Application for PlayStation Vita to read manga or comics<br>
 * Manga / Comics tracking
 * Support of longpages without downscaling (downscales only if no enough vram)
 * Support of formats such as: .ZIP .CBZ
-* Multi-language (English, Russian, Spanish, Vietnamese, Italian, French, Turkish, Portuguese (Brazil), Traditional and Simplified Chinese, Romanian, Polish)
+* Multi-language (English, Russian, Spanish, Vietnamese, Italian, French, Turkish, Portuguese (Brazil), Traditional and Simplified Chinese, Romanian, Polish, German, Japanese)
 * Offline mode (if you forgot to track manga / comics you downloaded, check history tab, and don't clear cache)
 * Advanced search (Filters, Tags, etc.)
 * Custom settings for manga / comics (Orientation, Read Direction, Zoom mode)
@@ -83,6 +83,8 @@ If you want to backup, here's what you can backup
 ## FAQ
 - **I've found a bug that ...**
     - You can create issue [here](https://github.com/Creckeryop/NOBORU/issues), give a screenshot with error or error file
+- **Catalog is empty / All manga has no chapters / All chapters has no images**
+    - First of all check if your catalog version isn't outdated. To make sure if it's last version refresh all catalogs sometimes. If new version of catalog was installed, app will notify you with 'Updated' message on catalog. If that doesn't work, you can write on my email: didager@yandex.ru (please tell me every detail you can, what's catalog, what's manga, what's chapter, what's page). Also you can create issue [here](https://github.com/Creckeryop/NOBORU-parsers/issues)
 - **How to open debug console?**
     - DPAD_LEFT + START
 - **How to download chapters in background?**
@@ -114,4 +116,6 @@ Execute `build.bat` to create working .vpk
 <br>[rutantan](https://github.com/rutantan) - Portuguese (Brazil) translation
 <br>[Qingyu510](https://github.com/Qingyu510) - Simplified Chinese & Traditional Chinese translation
 <br>[tmihai20](https://github.com/tmihai20) - Romanian translation
-<br>[tofudd](https://github.com/tofudd) - Polish translation
+<br>[tof4](https://github.com/tof4) - Polish translation
+<br>[lukrynka](https://github.com/lukrynka) - German translation
+<br>[kuragehime](https://github.com/kuragehimekurara1) - Japanese translation
